@@ -11,12 +11,13 @@
   "license": "MIT",
   "icon": "assets/UniversalChat/icon.png",
   "environment": "*",
+  "accessWidener": "universalchat.aw",
   "entrypoints": {
     "client": [
       "mine.block.universalchat.UniversalchatClient"
     ],
-    "preLaunch": [
-      "mine.block.universalchat.UniversalchatClient"
+    "modmenu": [
+      "mine.block.universalchat.config.ModMenuEntry"
     ]
   },
   "mixins": [

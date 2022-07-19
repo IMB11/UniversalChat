@@ -1,11 +1,17 @@
 package mine.block.universalchat.mixin;
 
+import me.shedaniel.autoconfig.AutoConfig;
+import mine.block.universalchat.config.UniversalChatConfig;
 import mine.block.universalchat.detection.DetectionManager;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.ChatHud;
+import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.text.ClickEvent;
 import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import org.checkerframework.checker.units.qual.A;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,7 +33,7 @@ public abstract class ChatHudMixin {
             String input = text.getString();
             String language = DetectionManager.getLanguage(input);
 
-            String translated = DetectionManager.Post(input, language, "en");
+            String translated = DetectionManager.Post(input, language, AutoConfig.getConfigHolder(UniversalChatConfig.class).getConfig().targetLanguage.getCode());
 
             if(translated.equals(input)) {
                 this.addMessage(text, 0);
@@ -46,4 +52,5 @@ public abstract class ChatHudMixin {
 
         ci.cancel();
     }
+
 }

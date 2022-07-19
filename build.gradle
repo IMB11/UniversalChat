@@ -7,11 +7,10 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-    // Add repositories to retrieve artifacts from in here.
-    // You should only use this when depending on other mods because
-    // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-    // See https://docs.gradle.org/current/userguide/declaring_repositories.html
-    // for more information about repositories.
+    maven { url 'https://maven.gegy.dev' }
+    maven { url 'https://jitpack.io' }
+    maven { url "https://maven.shedaniel.me/" }
+    maven { url "https://maven.terraformersmc.com/releases" }
 }
 
 dependencies {
@@ -23,8 +22,18 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.cybozu.labs/langdetect
     include(implementation("com.github.pemistahl:lingua:1.2.1"))
-    include(implementation("com.squareup.okhttp3:okhttp:4.10.0"))
 
+    // https://github.com/therealbush/translator
+    include(implementation('com.github.therealbush:translator:1.0.2'))
+
+    include(modApi("me.shedaniel.cloth:cloth-config-fabric:7.0.73") { exclude(group: "net.fabricmc.fabric-api") })
+
+    modImplementation("com.terraformersmc:modmenu:4.0.4")
+    modRuntimeOnly("com.terraformersmc:modmenu:4.0.4")
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/universalchat.aw")
 }
 
 processResources {
@@ -34,10 +43,6 @@ processResources {
     filesMatching("fabric.mod.json") {
         expand "version": project.version
     }
-}
-
-task showMeCache doLast() {
-    configurations.compileClasspath.each { println it }
 }
 
 def targetJavaVersion = 17
