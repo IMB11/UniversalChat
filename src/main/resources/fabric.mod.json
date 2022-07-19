@@ -9,7 +9,7 @@
   ],
   "contact": {},
   "license": "MIT",
-  "icon": "assets/UniversalChat/icon.png",
+  "icon": "assets/universalchat/icon.png",
   "environment": "*",
   "accessWidener": "universalchat.aw",
   "entrypoints": {
