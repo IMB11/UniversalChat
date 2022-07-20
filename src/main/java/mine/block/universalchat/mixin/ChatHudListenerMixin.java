@@ -1,16 +1,15 @@
 package mine.block.universalchat.mixin;
 
 import me.bush.translator.Language;
-import me.bush.translator.LanguageKt;
 import me.bush.translator.Translation;
 import me.shedaniel.autoconfig.AutoConfig;
 import mine.block.universalchat.config.UniversalChatConfig;
 import mine.block.universalchat.detection.DetectionManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.ChatHudListener;
-import net.minecraft.network.message.MessageSender;
-import net.minecraft.network.message.MessageType;
+import net.minecraft.network.MessageType;
 import net.minecraft.text.HoverEvent;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -22,6 +21,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Locale;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicReference;
@@ -30,29 +30,32 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ChatHudListenerMixin {
     @Shadow @Final private MinecraftClient client;
 
-    private void manualAdd(MessageType.DisplayRule type, Text message, MessageSender sender) {
-        Text text2 = type.apply(message, sender);
-        if (sender == null) {
-            this.client.inGameHud.getChatHud().addMessage(text2);
+    private void manualAdd(MessageType type, Text message) {
+        if (type == MessageType.CHAT) {
+            this.client.inGameHud.getChatHud().addMessage(message);
         } else {
-            this.client.inGameHud.getChatHud().queueMessage(text2);
+            this.client.inGameHud.getChatHud().queueMessage(message);
         }
     }
 
     @Inject(method = "onChatMessage", at = @At("HEAD"), cancellable = true)
-    public void modifyOnChatMessage(MessageType type, Text message, MessageSender sender, CallbackInfo ci) throws ExecutionException, InterruptedException {
+    public void modifyOnChatMessage(MessageType type, Text message, UUID sender, CallbackInfo ci) throws ExecutionException, InterruptedException {
         Language target = AutoConfig.getConfigHolder(UniversalChatConfig.class).get().targetLanguage;
 
         CompletableFuture<Text> future = new CompletableFuture<Text>().completeAsync(() -> {
             AtomicReference<Text> text = new AtomicReference<>(message);
-            type.chat().ifPresent((ignored) -> {
+            if (type == MessageType.CHAT) {
                 String messageContent = message.getString();
+
+                if(!DetectionManager.netIsAvailable()) manualAdd(type, text.get());
 
                 Translation result = DetectionManager.Post(messageContent);
 
-                Style style = Text.literal(result.getTranslatedText()).getStyle().withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Translated from " + new Locale(result.getSourceLanguage().getCode()).getDisplayLanguage() + ": ").append(Text.literal(messageContent).formatted(Formatting.GRAY))));
-                manualAdd(ignored, Text.literal(result.getTranslatedText()).setStyle(style), sender);
-            });
+                Style style = new LiteralText(result.getTranslatedText()).getStyle().withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText("Translated from " + new Locale(result.getSourceLanguage().getCode()).getDisplayLanguage() + ": ").append(new LiteralText(messageContent).formatted(Formatting.GRAY))));
+                manualAdd(type, new LiteralText(result.getTranslatedText()).setStyle(style));
+            } else {
+                manualAdd(type, text.get());
+            }
 
             return null;
         });
