@@ -20,9 +20,6 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    // https://mvnrepository.com/artifact/com.cybozu.labs/langdetect
-    include(implementation("com.github.pemistahl:lingua:1.2.1"))
-
     // https://github.com/therealbush/translator
     include(implementation('com.github.therealbush:translator:1.0.2'))
 
@@ -30,10 +27,6 @@ dependencies {
 
     modImplementation("com.terraformersmc:modmenu:4.0.4")
     modRuntimeOnly("com.terraformersmc:modmenu:4.0.4")
-}
-
-loom {
-    accessWidenerPath = file("src/main/resources/universalchat.aw")
 }
 
 processResources {

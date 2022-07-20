@@ -28,29 +28,29 @@ public abstract class ChatHudMixin {
 
     @Inject(method = "addMessage(Lnet/minecraft/text/Text;)V", at = @At("HEAD"), cancellable = true)
     public void addMessage(Text text, CallbackInfo ci) {
-
-        CompletableFuture future = new CompletableFuture().completeAsync(() -> {
-            String input = text.getString();
-            String language = DetectionManager.getLanguage(input);
-
-            String translated = DetectionManager.Post(input, language, AutoConfig.getConfigHolder(UniversalChatConfig.class).getConfig().targetLanguage.getCode());
-
-            if(translated.equals(input)) {
-                this.addMessage(text, 0);
-                return null;
-            }
-
-            if(translated.equals("translation_err")) {
-                Style style = text.getStyle().withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("A translation error has occured. We were unable to translate this message.").formatted(Formatting.RED, Formatting.ITALIC)));
-                this.addMessage(text.copy().formatted(Formatting.UNDERLINE).setStyle(style), 0);
-            } else {
-                Style style = Text.literal(translated).getStyle().withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Translated from " + new Locale(language).getDisplayLanguage() + ": ").append(Text.literal(input).formatted(Formatting.GRAY))));
-                this.addMessage(Text.literal(translated).copy().setStyle(style), 0);
-            }
-            return null;
-        });
-
-        ci.cancel();
+//
+//        CompletableFuture future = new CompletableFuture().completeAsync(() -> {
+//            String input = text.getString();
+//            String language = DetectionManager.getLanguage(input);
+//
+//            String translated = DetectionManager.Post(input, language, AutoConfig.getConfigHolder(UniversalChatConfig.class).getConfig().targetLanguage.getCode());
+//
+//            if(translated.equals(input)) {
+//                this.addMessage(text, 0);
+//                return null;
+//            }
+//
+//            if(translated.equals("translation_err")) {
+//                Style style = text.getStyle().withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("A translation error has occured. We were unable to translate this message.").formatted(Formatting.RED, Formatting.ITALIC)));
+//                this.addMessage(text.copy().formatted(Formatting.UNDERLINE).setStyle(style), 0);
+//            } else {
+//                Style style = Text.literal(translated).getStyle().withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Translated from " + new Locale(language).getDisplayLanguage() + ": ").append(Text.literal(input).formatted(Formatting.GRAY))));
+//                this.addMessage(Text.literal(translated).copy().setStyle(style), 0);
+//            }
+//            return null;
+//        });
+//
+//        ci.cancel();
     }
 
 }
