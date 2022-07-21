@@ -48,6 +48,8 @@ public class ChatHudListenerMixin {
             type.chat().ifPresent((ignored) -> {
                 String messageContent = message.getString();
 
+                if(!DetectionManager.netIsAvailable()) manualAdd(ignored, text.get(), sender);
+
                 Translation result = DetectionManager.Post(messageContent);
 
                 Style style = Text.literal(result.getTranslatedText()).getStyle().withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Translated from " + new Locale(result.getSourceLanguage().getCode()).getDisplayLanguage() + ": ").append(Text.literal(messageContent).formatted(Formatting.GRAY))));
