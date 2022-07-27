@@ -7,4 +7,5 @@ import me.shedaniel.autoconfig.annotation.Config;
 @Config(name = "universalchat")
 public class UniversalChatConfig implements ConfigData {
     public Language targetLanguage = Language.ENGLISH;
+    public boolean enablePreviewTranslation = true;
 }

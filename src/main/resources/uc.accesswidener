@@ -1,0 +1,5 @@
+accessWidener v2      named
+accessible    method    net/minecraft/client/network/message/MessageHandler    processChatMessage    (Lnet/minecraft/network/message/MessageType$Parameters;Lnet/minecraft/network/message/SignedMessage;Lnet/minecraft/text/Text;Lnet/minecraft/client/network/PlayerListEntry;ZLjava/time/Instant;)Z
+accessible    class    net/minecraft/client/network/message/MessageHandler$ProcessableMessage
+accessible    method    net/minecraft/client/network/message/MessageHandler    processProfilelessMessage    (Lnet/minecraft/network/message/MessageType$Parameters;Lnet/minecraft/network/message/SignedMessage;Lnet/minecraft/text/Text;)Z
+accessible    method    net/minecraft/client/network/message/MessageHandler    processHeader    (Lnet/minecraft/network/message/MessageHeader;Lnet/minecraft/network/message/MessageSignatureData;[B)Z

@@ -11,6 +11,7 @@
   "license": "AFL-3.0",
   "icon": "assets/universalchat/icon.png",
   "environment": "*",
+  "accessWidener": "uc.accesswidener",
   "entrypoints": {
     "client": [
       "mine.block.universalchat.UniversalchatClient"
@@ -25,6 +26,6 @@
   "depends": {
     "fabricloader": ">=0.14.8",
     "fabric": "*",
-    "minecraft": "1.19"
+    "minecraft": ">=1.19.1"
   }
 }

@@ -6,8 +6,8 @@
   "mixins": [
   ],
   "client": [
-    "ChatHudListenerMixin",
-    "ChatHudMixin"
+    "MessageHandlerMixin",
+    "RenderDataMixin"
   ],
   "injectors": {
     "defaultRequire": 1

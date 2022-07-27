@@ -1,4 +1,5 @@
 {
   "text.autoconfig.universalchat.option.targetLanguage": "Target Language",
+  "text.autoconfig.universalchat.option.enablePreviewTranslation": "Translate Chat Preview",
   "text.autoconfig.universalchat.title": "UniversalChat"
 }
